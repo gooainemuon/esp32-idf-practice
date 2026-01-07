@@ -1,0 +1,34 @@
+# ESP-IDF Build artifacts
+build/
+sdkconfig
+sdkconfig.old
+sdkconfig.defaults.old
+
+# VS Code settings
+.vscode/
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/settings.json
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+ENV/
+
+# Log files
+*.log
+
+# Unit test artifacts
+test_build/
+
+# Managed components (if using IDF Component Manager)
+managed_components/
+dependencies.lock
+
+# Temporary files
+*~
+*.swp
