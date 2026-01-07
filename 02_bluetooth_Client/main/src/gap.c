@@ -130,6 +130,9 @@ static void start_advertising(void) {
  * gap_event_handler is a callback function registered when calling
  * ble_gap_adv_start API and called when a GAP event arrives
  */
+uint16_t connection_handle = 0;
+bool is_connected = false;
+
 static int gap_event_handler(struct ble_gap_event *event, void *arg) {
     /* Local variables */
     int rc = 0;
@@ -149,6 +152,8 @@ static int gap_event_handler(struct ble_gap_event *event, void *arg) {
         if (event->connect.status == 0) {
             /* Check connection handle */
             rc = ble_gap_conn_find(event->connect.conn_handle, &desc);
+            is_connected = true;
+
             if (rc != 0) {
                 ESP_LOGE(TAG,
                          "failed to find connection by handle, error code: %d",
@@ -177,6 +182,7 @@ static int gap_event_handler(struct ble_gap_event *event, void *arg) {
         }
         /* Connection failed, restart advertising */
         else {
+            is_connected = false;
             start_advertising();
         }
         return rc;
@@ -189,7 +195,8 @@ static int gap_event_handler(struct ble_gap_event *event, void *arg) {
 
         /* Turn off the LED */
         led_off();
-
+        is_connected = false;
+        connection_handle = 0;
         /* Restart advertising */
         start_advertising();
         return rc;
